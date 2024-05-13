@@ -1,0 +1,181 @@
+Σ => <json>
+
+
+<json> => { <json_atributos> }
+
+
+-- Define estructura de objeto json
+<json_atributos> => <empresas> , <version> , <firma_digital>
+<json_atributos> => <empresas> , <firma_digital> , <version>
+<json_atributos> => <version> , <empresas> , <firma_digital>
+<json_atributos> => <version> , <firma_digital> , <empresas>
+<json_atributos> => <firma_digital> , <empresas> , <version>
+<json_atributos> => <firma_digital> , <version> , <empresas>
+<json_atributos> => <version> , <empresas>
+<json_atributos> => <firma_digital> , <empresas>
+<json_atributos> => <empresas> , <firma_digital>
+<json_atributos> => <empresas> , <version>
+<json_atributos> => <empresas>
+
+
+-- Reemplazo de atributos de objeto json
+<version> => "version" : string
+<version> => "version" : null
+<firma_digital> => "firma_digital" : string
+<firma_digital> => "firma_digital" : null
+<empresas> => "empresas" : <empresas_lista>
+
+-- Define lista de empresas
+-- Lista de objetos empresa
+<empresas_lista> => [ <empresa_nt> ]
+<empresa_nt> => <empresa> , <empresa_nt>
+<empresa_nt> => <empresa>
+<empresa> => { <empresa_atributos> }
+
+
+-- Define estructura de objeto empresa
+-- Los atributos de este objeto se encuentran siempre ordenados
+<empresa_atributos> => <nombre_empresa> , <fundacion> , <direccion> , <ingresos_anuales> , <pyme> , <link> , <departamentos>
+<empresa_atributos> => <nombre_empresa> , <fundacion> , <direccion> , <ingresos_anuales> , <pyme> , <departamentos>
+<empresa_atributos> => <nombre_empresa> , <fundacion> , <ingresos_anuales> , <pyme> , <link> , <departamentos>
+<empresa_atributos> => <nombre_empresa> , <fundacion> , <ingresos_anuales> , <pyme> , <departamentos>
+
+
+-- Reemplazo de atributos de objeto empresa
+<nombre_empresa> => "nombre_empresa" : string
+<fundacion> => "fundacion" : string
+<direccion> => "direccion" : { <direccion_atributos> }
+<direccion> => "direccion" : { }
+<direccion> => "direccion" : null
+<ingresos_anuales> => "ingresos_anuales" : "float"
+<pyme> => "pyme" : "bool"
+<link> => "link" : string
+<link> => "link" : null
+
+
+-- Define estructura de objeto direccion
+-- Objeto con los atributos: calle, ciudad, país.
+<direccion_atributos> => <calle> , <ciudad> , <pais>
+<direccion_atributos> => <ciudad> , <calle> , <pais>
+<direccion_atributos> => <pais> , <calle> , <ciudad>
+<direccion_atributos> => <calle> , <pais> , <ciudad>
+<direccion_atributos> => <ciudad> , <pais> , <calle>
+<direccion_atributos> => <pais> , <ciudad> , <calle>
+
+
+-- Reemplazo de valores de direccion
+<calle> => "calle" : string
+<ciudad> => "ciudad" : string
+<pais> => "pais" : string
+
+
+-- Define lista de departamentos
+-- Lista de objetos departamento
+<departamentos> => "departamentos" : <departamentos_lista>
+<departamentos_lista> => [ <departamento_nt> ]
+<departamento_nt> => <departamento> , <departamento_nt>
+<departamento_nt> => <departamento>
+<departamento> => { <departamento_atributos> }
+
+
+-- Define estructura de objeto departamento
+-- Objeto con los atributos: nombre, jefe?,subdepartamentos
+<departamento_atributos> => <nombre_departamento> , <jefe_departamento> , <subdepartamentos>
+<departamento_atributos> => <jefe_departamento> , <nombre_departamento> , <subdepartamentos>
+<departamento_atributos> => <subdepartamentos> , <nombre_departamento> , <jefe_departamento>
+<departamento_atributos> => <nombre_departamento> , <subdepartamentos> , <jefe_departamento>
+<departamento_atributos> => <jefe_departamento> , <subdepartamentos> , <nombre_departamento>
+<departamento_atributos> => <subdepartamentos> , <jefe_departamento> , <nombre_departamento>
+
+
+-- Reemplazo de valores de departamento
+<nombre_departamento> => "nombre" : string
+<jefe_departamento> => "jefe" : string
+<jefe_departamento> => "jefe" : null
+<subdepartamentos> => "subdepartamentos" : <subdepartamentos_lista>
+
+-- Define lista de subdepartamentos
+-- Lista de objetos subdepartamento.
+<subdepartamentos_lista> => [ <subdepartamento_nt> ]
+<subdepartamento_nt> => <subdepartamento> , <subdepartamento_nt>
+<subdepartamento_nt> => <subdepartamento>
+<subdepartamento> => { <subdepartamento_atributos> }
+
+
+-- Define estructura de objeto subdepartamento
+-- Objeto con los atributos: nombre, jefe?, empleados?
+<subdepartamento_atributos> => <nombre_subdepartamento> , <jefe_subdepartamento> , <empleados>
+<subdepartamento_atributos> => <jefe_subdepartamento> , <nombre_subdepartamento> , <empleados>
+<subdepartamento_atributos> => <empleados> , <nombre_subdepartamento> , <jefe_subdepartamento>
+<subdepartamento_atributos> => <nombre_subdepartamento> , <empleados> , <jefe_subdepartamento>
+<subdepartamento_atributos> => <jefe_subdepartamento> , <empleados> , <nombre_subdepartamento>
+<subdepartamento_atributos> => <empleados> , <jefe_subdepartamento> , <nombre_subdepartamento>
+<subdepartamento_atributos> => <nombre_subdepartamento> , <jefe_subdepartamento>
+<subdepartamento_atributos> => <jefe_subdepartamento> , <nombre_subdepartamento>
+<subdepartamento_atributos> => <nombre_subdepartamento> , <empleados>
+<subdepartamento_atributos> => <empleados> , <nombre_subdepartamento>
+<subdepartamento_atributos> => <nombre_subdepartamento>
+
+-- Reemplazo de valores de subdepartamento
+<nombre_subdepartamento> => "nombre" : string
+<jefe_subdepartamento> => "jefe" : string
+<jefe_subdepartamento> => "jefe" : null
+
+
+-- Define lista de empleados
+-- Lista de objetos empleado
+<empleados> => "empleados" : <empleados_lista>
+<empleados_lista> => [ <empleado_nt> ]
+<empleados_lista> => [ ]
+<empleados_lista> => null
+<empleado_nt> => <empleado> , <empleado_nt>
+<empleado_nt> => <empleado>
+<empleado> => { <empleado_atributos> }
+
+
+-- Define estructura de objeto empleado
+-- Los atributos de este objeto se encuentran siempre ordenados
+-- Objeto con los atributos: nombre, edad?, cargo, salario, activo, fecha_contratacion, proyectos?
+<empleado_atributos> => <nombre_empleado> , <edad> , <cargo> , <salario> , <activo> , <fecha_contratacion> , <proyectos>
+<empleado_atributos> => <nombre_empleado> , <edad> , <cargo> , <salario> , <activo> , <fecha_contratacion>
+<empleado_atributos> => <nombre_empleado> , <cargo> , <salario> , <activo> , <fecha_contratacion> , <proyectos>
+<empleado_atributos> => <nombre_empleado> , <cargo> , <salario> , <activo> , <fecha_contratacion>
+
+
+-- Reemplazo de atributos de empleado
+<nombre_empleado> => "nombre" : string
+<edad> => "edad" : integer
+<edad> => "edad" : null
+<cargo> => "cargo" : string
+<salario> => "salario" : integer
+<activo> => "activo" : "bool"
+<fecha_contratacion> => "fecha_contratacion" : date
+<proyectos> => "proyectos" : <proyectos_lista>
+
+
+-- Define lista de proyectos
+-- Lista de objetos proyecto
+<proyectos_lista> => [ <proyecto_nt> ]
+<proyectos_lista> => [ ]
+<proyectos_lista> => null
+<proyecto_nt> => <proyecto> , <proyecto_nt> 
+<proyecto_nt> => <proyecto>
+<proyecto> => { <proyecto_atributos> }
+
+
+-- Define estructura de objeto proyecto
+-- Los atributos de este objeto se encuentran siempre ordenados
+-- Objeto con los atributos: nombre, estado?, fecha_inicio, fecha_fin?
+<proyecto_atributos> => <nombre_proyecto> , <estado> , <fecha_inicio> , <fecha_fin> 
+<proyecto_atributos> => <nombre_proyecto> , <estado> , <fecha_inicio> 
+<proyecto_atributos> => <nombre_proyecto> , <fecha_inicio> , <fecha_fin>
+<proyecto_atributos> => <nombre_proyecto> , <fecha_inicio>
+
+
+-- Reemplazo de atributos de proyecto
+<nombre_proyecto> => "nombre" : string
+<estado> => "estado" : string
+<estado> => "estado" : null
+<fecha_inicio> => "fecha_inicio" : date
+<fecha_fin> => "fecha_fin" : date
+<fecha_fin> => "fecha_fin" : null
