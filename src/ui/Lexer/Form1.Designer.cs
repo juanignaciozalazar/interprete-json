@@ -28,22 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
             button2 = new Button();
+            ConfigButton = new Button();
+            button1 = new Button();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.White;
-            button1.FlatAppearance.BorderSize = 0;
-            button1.ForeColor = Color.Black;
-            button1.Location = new Point(199, 253);
-            button1.Name = "button1";
-            button1.Size = new Size(93, 27);
-            button1.TabIndex = 0;
-            button1.Text = "CONTINUAR";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // button2
             // 
@@ -58,12 +46,36 @@
             button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
+            // ConfigButton
+            // 
+            ConfigButton.Location = new Point(12, 12);
+            ConfigButton.Name = "ConfigButton";
+            ConfigButton.Size = new Size(75, 23);
+            ConfigButton.TabIndex = 2;
+            ConfigButton.Text = "Configurar";
+            ConfigButton.UseVisualStyleBackColor = true;
+            ConfigButton.Click += ConfigButton_Click;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.White;
+            button1.FlatAppearance.BorderSize = 0;
+            button1.ForeColor = Color.Black;
+            button1.Location = new Point(181, 261);
+            button1.Name = "button1";
+            button1.Size = new Size(136, 27);
+            button1.TabIndex = 0;
+            button1.Text = "Interprete Léxico";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.Group_5;
             ClientSize = new Size(500, 300);
+            Controls.Add(ConfigButton);
             Controls.Add(button2);
             Controls.Add(button1);
             FormBorderStyle = FormBorderStyle.None;
@@ -74,8 +86,8 @@
         }
 
         #endregion
-
-        private Button button1;
         private Button button2;
+        private Button ConfigButton;
+        private Button button1;
     }
 }

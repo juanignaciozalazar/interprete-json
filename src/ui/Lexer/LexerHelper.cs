@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -35,9 +36,12 @@ namespace Lexer
 
             LexerHelper helper = new LexerHelper(inputFilePath, outputFilePath);
 
+            helper.isInputTemp = true;
+            helper.isOutputTemp = true;
+
             int lexerReturnValue = helper.callLexer();
 
-            Console.WriteLine(lexerReturnValue.ToString());
+            Debug.WriteLine(lexerReturnValue.ToString());
 
             string outputText = helper.readOutputFile();
 
@@ -48,15 +52,40 @@ namespace Lexer
 
         public int callLexer()
         {
-            return lex(new StringBuilder(this.inputFilePath), new StringBuilder(this.outputFilePath));
+            var returnValue = lex(new StringBuilder(this.inputFilePath), new StringBuilder(this.outputFilePath));
+
+            return returnValue;
+
         }
 
         private string readOutputFile()
         {
             return File.ReadAllText(outputFilePath.ToString());
         }
+        private int lex(StringBuilder inputFileName, StringBuilder outputFileName)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = false;
+            startInfo.UseShellExecute = false;
+            startInfo.FileName = Program.ReadSetting(Program.interpreterKey);
+            startInfo.CreateNoWindow = true;
+            startInfo.Arguments = $"{inputFileName} {outputFileName}";
 
-        [DllImport(@"C:\Users\avril\OneDrive\Documentos\src\interprete-json\src\interpreter.dll")]
-        private static extern int lex(StringBuilder inputFileName, StringBuilder outputFileName);
+            try
+            {
+
+                using( Process lexerProcess = Process.Start(startInfo)! )
+                {
+                    lexerProcess.WaitForExit();
+                }
+
+                return 0;
+
+            } catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return -1;
+            }
+        }
     }
 }

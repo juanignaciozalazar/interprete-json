@@ -58,7 +58,8 @@ namespace Lexer
             if (lexedString == null)
             {
                 OutputTextBox.Text = string.Empty;
-            } else
+            }
+            else
             {
                 OutputTextBox.Text = lexedString;
             }
