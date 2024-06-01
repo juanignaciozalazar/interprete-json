@@ -1,15 +1,32 @@
 #include <stdio.h>
 #include <conio.h>
 #include <string.h>
-#include "lexer/lexer.c"
+#include "lexer/lex.yy.c"
 #include "interpreter.h"
+
+int lex ( char* inputFilePath, char* outputFilePath );
+int handleFiles ( char* inputFilePath, char* outputFilePath );
+
 
 int main ( int argc, char* argv[] )
 {
-	printf("Ingrese un string y le dire que es:\n");
-	printf("Presione CTRL + C para salir\n");
-	yyin = stdin;
-	yylex();
+
+	if (argc == 1) {
+		printf("Ingrese un string y le dire que es:\n");
+		printf("Presione CTRL + C para salir\n");
+		yyin = stdin;
+		yylex();
+	} else if (argc == 2) {
+		printf("Se recibio un solo archivo, se escribirá la salida a la pantalla\n");
+		lex(argv[1], NULL);
+	} else if (argc == 3) {
+		printf("Se recibieron dos archivos, se escribirá la salida en el segundo\n");
+		printf("Archivo de entrada: ");
+		printf("%s\n", argv[1]);
+		printf("Archivo de salida: ");
+		printf("%s\n", argv[2]);
+		lex(argv[1], argv[2]);
+	}
 
 	return 0;
 
@@ -17,7 +34,12 @@ int main ( int argc, char* argv[] )
 
 int handleFiles( char* inputFilePath, char* outputFilePath ) {
 	FILE* inputFileHandler = fopen(inputFilePath, "r");
-	FILE* outputFileHandler = fopen(outputFilePath, "w");
+
+	FILE* outputFileHandler = stdout;
+
+	if ( outputFilePath != NULL) {
+		outputFileHandler = fopen(outputFilePath, "w");
+	}
 
 	if (inputFileHandler == NULL) {
 		fclose(outputFileHandler);
@@ -47,7 +69,11 @@ int lex ( char* inputFilePath, char* outputFilePath) {
 	yylex();
 
 	fclose( yyin );
-	fclose( yyout );
+
+	if (yyout != stdout){
+		fclose( yyout );
+	}
+	
 
 	return 0;
 
