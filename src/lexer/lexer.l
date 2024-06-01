@@ -76,6 +76,6 @@ Extras [{}\[\],:]
 
 
 void yyerror ( char* s ) {
-    fprintf(yyout, "Error Lexico: Caracter invalido => \"%s\"", s);
+    fprintf(yyout, "[Error Lexico: Caracter invalido => \"%s\"]", s);
 }
 
