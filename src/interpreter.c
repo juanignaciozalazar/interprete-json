@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <conio.h>
 #include <string.h>
 #include "lexer/lex.yy.c"
 #include "interpreter.h"
