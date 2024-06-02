@@ -109,14 +109,5 @@ namespace Lexer.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to asdfasdf.
-        /// </summary>
-        internal static string InterpreterDllPath {
-            get {
-                return ResourceManager.GetString("InterpreterDllPath", resourceCulture);
-            }
-        }
     }
 }
