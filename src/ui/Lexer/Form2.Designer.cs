@@ -34,7 +34,7 @@
             // 
             // TextInputBox
             // 
-            TextInputBox.BackColor = Color.FromArgb(49, 54, 63);
+            TextInputBox.BackColor = Color.FromArgb(77, 77, 77);
             TextInputBox.Dock = DockStyle.Fill;
             TextInputBox.ForeColor = Color.White;
             TextInputBox.Location = new Point(10, 90);
@@ -57,13 +57,13 @@
             label2.Name = "label2";
             label2.Size = new Size(612, 17);
             label2.TabIndex = 6;
-            label2.Text = "Por favor, ingrese el texto para ser analizado a continuación: ";
+            label2.Text = "Por favor, ingrese el texto que será analizado:";
             // 
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.AutoSize = true;
             tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            tableLayoutPanel1.BackColor = Color.FromArgb(49, 54, 63);
+            tableLayoutPanel1.BackColor = Color.FromArgb(61, 61, 61);
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(label2, 0, 1);
@@ -88,7 +88,7 @@
             // 
             // OutputTextBox
             // 
-            OutputTextBox.BackColor = Color.FromArgb(49, 54, 63);
+            OutputTextBox.BackColor = Color.FromArgb(77, 77, 77);
             OutputTextBox.CausesValidation = false;
             OutputTextBox.Dock = DockStyle.Fill;
             OutputTextBox.ForeColor = Color.White;
@@ -103,7 +103,7 @@
             // 
             // tableLayoutPanel2
             // 
-            tableLayoutPanel2.BackColor = Color.FromArgb(49, 54, 63);
+            tableLayoutPanel2.BackColor = Color.FromArgb(61, 61, 61);
             tableLayoutPanel2.ColumnCount = 1;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel2.Controls.Add(ExitButton, 0, 0);
