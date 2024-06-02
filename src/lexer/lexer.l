@@ -9,7 +9,6 @@ void yyerror( char *s);
 
 %option noyywrap
 %option yylineno 
-%option caseless 
 %option nodefault
 
 Ignorar	("\n"|"\t"|" ")*
@@ -39,14 +38,14 @@ Extras [{}\[\],:]
 "\"firma_digital\"" { fprintf(yyout, "%s", "K_FIRMA_DIGITAL"); }
 "\"empresas\"" { fprintf(yyout, "%s", "K_EMPRESAS"); }
 "\"nombre_empresa\"" { fprintf(yyout, "%s", "K_NOMBRE_EMPRESA"); }
-"\"fundacion\"" { fprintf(yyout, "%s", "K_FUNDACION"); }
-"\"direccion\"" { fprintf(yyout, "%s", "K_DIRECCION"); }
+"\"fundaci"("ó"|"o")"n\"" { fprintf(yyout, "%s", "K_FUNDACION"); }
+"\"direcci"("ó"|"o")"n\"" { fprintf(yyout, "%s", "K_DIRECCION"); }
 "\"ingresos_anuales\"" { fprintf(yyout, "%s", "K_INGRESOS_ANUALES"); }
 "\"pyme\"" { fprintf(yyout, "%s", "K_PYME"); }
 "\"link\"" { fprintf(yyout, "%s", "K_LINK"); }
 "\"calle\"" { fprintf(yyout, "%s", "K_CALLE"); } 
 "\"ciudad\"" { fprintf(yyout, "%s", "K_CIUDAD"); }
-"\"pais\"" { fprintf(yyout, "%s", "K_PAIS"); }
+"\"pa"("í"|"i")"s\"" { fprintf(yyout, "%s", "K_PAIS"); }
 "\"departamentos\"" { fprintf(yyout, "%s", "K_DEPARTAMENTOS"); }
 "\"nombre\"" { fprintf(yyout, "%s", "K_NOMBRE"); } 
 "\"jefe\"" { fprintf(yyout, "%s", "K_JEFE"); }
@@ -56,7 +55,7 @@ Extras [{}\[\],:]
 "\"cargo\"" { fprintf(yyout, "%s", "K_CARGO"); }
 "\"salario\"" { fprintf(yyout, "%s", "K_SALARIO"); }
 "\"activo\"" { fprintf(yyout, "%s", "K_ACTIVO"); }
-"\"fecha_contratación\"" { fprintf(yyout, "%s", "K_FECHA_CONTRATACION"); }
+"\"fecha_contrataci"("ó"|"o")"n\"" { fprintf(yyout, "%s", "K_FECHA_CONTRATACION"); }
 "\"proyectos\"" { fprintf(yyout, "%s", "K_PROYECTOS"); }
 "\"estado\"" { fprintf(yyout, "%s", "K_ESTADO"); }
 "\"fecha_inicio\"" { fprintf(yyout, "%s", "K_FECHA_INICIO"); }
