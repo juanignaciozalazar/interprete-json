@@ -1,6 +1,5 @@
 %{
 #include <stdio.h>
-#include <conio.h>
 #include <string.h>
 #include "../parser/parser.tab.c"
 #ifndef STRING_BUFFER_SIZE
