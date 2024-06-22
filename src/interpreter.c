@@ -4,10 +4,6 @@
 #include "lexer/lex.yy.c"
 #include "interpreter.h"
 
-int lex ( char* inputFilePath, char* outputFilePath );
-int handleFiles ( char* inputFilePath, char* outputFilePath );
-
-
 int main ( int argc, char* argv[] )
 {
 
@@ -15,17 +11,17 @@ int main ( int argc, char* argv[] )
 		printf("Ingrese un string y le dire que es:\n");
 		printf("Presione CTRL + C para salir\n");
 		yyin = stdin;
-		yylex();
+		yyparse();
 	} else if (argc == 2) {
-		printf("Se recibio un solo archivo, se escribirá la salida a la pantalla\n");
-		lex(argv[1], NULL);
+		printf("Se recibio un solo archivo, se escribira la salida a la pantalla\n");
+		parse(argv[1], NULL);
 	} else if (argc == 3) {
-		printf("Se recibieron dos archivos, se escribirá la salida en el segundo\n");
+		printf("Se recibieron dos archivos, se escribira la salida en el segundo\n");
 		printf("Archivo de entrada: ");
 		printf("%s\n", argv[1]);
 		printf("Archivo de salida: ");
 		printf("%s\n", argv[2]);
-		lex(argv[1], argv[2]);
+		parse(argv[1], argv[2]);
 	}
 
 	return 0;
@@ -60,13 +56,28 @@ int handleFiles( char* inputFilePath, char* outputFilePath ) {
 
 int lex ( char* inputFilePath, char* outputFilePath) {
 
-	int filesOpened = handleFiles( inputFilePath, outputFilePath);
+	execute(1, inputFilePath, outputFilePath);
+
+}
+
+int parse( char* inputFilePath, char* outputFilePath) {
+
+	execute(2, inputFilePath, outputFilePath);
+
+}
+
+int execute ( int mode, char* inputFilePath, char* outputFilePath) {
+		int filesOpened = handleFiles( inputFilePath, outputFilePath);
 
 	if ( filesOpened != 0 ) {
 		return filesOpened;
 	}
 
-	yylex();
+	if (mode == 1) {
+		yylex();
+	} else {
+		yyparse();
+	}
 
 	fclose( yyin );
 
@@ -76,21 +87,4 @@ int lex ( char* inputFilePath, char* outputFilePath) {
 	
 
 	return 0;
-
 }
-
-
-
-// int parse ( char* inputFilePath, char* outputFilePath) {
-
-// 	int filesOpened = handleFiles( inputFilePath, outputFilePath);
-
-// 	if ( filesOpened != 0 ) {
-// 		return filesOpened;
-// 	}
-
-// 	yylex();
-// 	yyparse();
-
-// }
-
