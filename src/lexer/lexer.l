@@ -6,6 +6,12 @@
 #define STRING_BUFFER_SIZE 1024
 #endif
 
+#ifndef MODE_LEXER
+#define MODE_LEXER 1
+#endif
+
+int executionMode;
+
 void showError( char *s);
 void printToken( char *token ); 
 void copyString();
@@ -27,7 +33,7 @@ Float [0-9]+\.[0-9]{1,2}
 Integer [0-9]+
 Dominio [a-zA-Z]+(\.[a-zA-Z]+)+
 Puerto :[0-9]{0,5}
-Ruta (\/[a-zA-Z]+)+
+Ruta (\/[a-zA-Z#/:?=]+)+
 Url \"[a-zA-Z]+"://"{Dominio}{Puerto}?{Ruta}?\"
 Cargo \"("Product Analyst"|"Project Manager"|"UX Designer"|"Marketing"|"Developer"|"Devops"|"DB Admin")\"
 Estado \"("To do"|"In progress"|"Canceled"|"Done"|"On hold")\"
@@ -93,7 +99,14 @@ void copyString () {
 
 void printToken( char *token) {
 
-    if ()
+    if (executionMode = MODE_LEXER) {
+        fprintf(yyout, token);
+        return;
+    }
+
+    if (executionMode = MODE_PARSING) {
+        printf(token);
+    }
 }
 
 

@@ -1,11 +1,17 @@
 %{
   #include <stdio.h>
-  #include "../asprintf.h"
+  #include "../lib/asprintf.h"
   #define YYDEBUG 1
   #define STRING_BUFFER_SIZE 1024
+  #define READ_BUFFER_SIZE 4096
+  #define MODE_PARSING 0
+  #define MODE_LEXER 1
   int yystopparser=0;
+  char *template_file_path;
+  int executionMode;
   int yylex();
   int yyerror(char *s);
+  void initTemplate();
 %}
 
 %error-verbose
@@ -43,7 +49,7 @@
 
 %%
 
-json: BRACE_OPEN json_atributos BRACE_CLOSE    { fprintf(yyout, "<!DOCTYPE html>\n<html><head><style> table, th, td { border: 1px solid black; border-collapse: collapse; }</style></head><body>%s</body></html>", $2); };
+json: BRACE_OPEN json_atributos BRACE_CLOSE    { initTemplate(); fprintf(yyout, "<body>%s</body>", $2); };
 
 json_atributos:
   empresas COMMA version COMMA firma_digital    { $$ = $1; }
@@ -291,4 +297,29 @@ fecha_fin:
 
 int yyerror(char *error) {
   fprintf(stderr, "[Error Sintactico (%s) en linea %d => %s]\n",yytext, yylineno, error);
+}
+
+void initTemplate() {
+  FILE *template;
+  char buffer[READ_BUFFER_SIZE];
+  size_t bytes_leidos;
+  
+  template = fopen(template_file_path, "r");
+
+  if (template == NULL) {
+    printf("No se encontró el archivo de template, se escribirá un template por defecto...\n");
+    fprintf(yyout, "<!DOCTYPE html>\n<html><head><style> table, th, td { border: 1px solid black; border-collapse: collapse; }</style></head>");
+    return;
+  }
+
+  while ((bytes_leidos = fread(buffer, sizeof(char), READ_BUFFER_SIZE, template)) > 0) {
+    if (fwrite(buffer, sizeof(char), bytes_leidos, yyout) != bytes_leidos) {
+      printf("Error al escribir en el archivo de destino\n");
+      fclose(template);
+      return;
+    }
+  }
+
+  fclose(template); 
+  
 }
