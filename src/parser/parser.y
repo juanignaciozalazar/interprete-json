@@ -49,7 +49,7 @@
 
 %%
 
-json: BRACE_OPEN json_atributos BRACE_CLOSE    { initTemplate(); fprintf(yyout, "<body>%s</body>", $2); };
+json: BRACE_OPEN json_atributos BRACE_CLOSE    { initTemplate(); fprintf(yyout, "<body>%s</body></html>", $2); };
 
 json_atributos:
   empresas COMMA version COMMA firma_digital    { $$ = $1; }
@@ -87,7 +87,7 @@ empresa_nt:
 | empresa                     { $$ = $1; }
 ;
 
-empresa: BRACE_OPEN empresa_atributos BRACE_CLOSE    { char *buf; asprintf(&buf, "<div style=\"border-color:grey;border-width:1px;border-style:inset;\">%s</div>", $2); $$ = buf; };
+empresa: BRACE_OPEN empresa_atributos BRACE_CLOSE    { char *buf; asprintf(&buf, "<div class=\"container\">%s</div>", $2); $$ = buf; };
 
 empresa_atributos:
   nombre_empresa COMMA fundacion COMMA direccion COMMA ingresos_anuales COMMA pyme COMMA link COMMA departamentos   { char *buf; asprintf(&buf, "%s%s%s", $1,$11,$13); $$ = buf; }
@@ -184,7 +184,7 @@ subdepartamento_nt:
 ;
 
 subdepartamento: 
-  BRACE_OPEN subdepartamento_atributos BRACE_CLOSE    { $$ = $2; }
+  BRACE_OPEN subdepartamento_atributos BRACE_CLOSE    { char *buf; asprintf(&buf, "<div class=\"lista\">%s</div>", $2); $$ = buf; }
 ;
 
 subdepartamento_atributos:
@@ -296,7 +296,7 @@ fecha_fin:
 %%
 
 int yyerror(char *error) {
-  fprintf(stderr, "[Error Sintactico (%s) en linea %d => %s]\n",yytext, yylineno, error);
+  fprintf(yyout, "[Error Sintactico (%s) en linea %d => %s]\n", yytext, yylineno, error);
 }
 
 void initTemplate() {
@@ -308,7 +308,7 @@ void initTemplate() {
 
   if (template == NULL) {
     printf("No se encontró el archivo de template, se escribirá un template por defecto...\n");
-    fprintf(yyout, "<!DOCTYPE html>\n<html><head><style> table, th, td { border: 1px solid black; border-collapse: collapse; }</style></head>");
+    fprintf(yyout, "<!DOCTYPE html>\n<html><head><style> .container { border-color:grey; border-width:1px; border-style:inset; } .lista { padding-left: 20px; } table, th, td { border: 1px solid black; border-collapse: collapse; }</style></head>");
     return;
   }
 
