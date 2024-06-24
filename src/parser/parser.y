@@ -18,12 +18,8 @@
 
 %token COMMA COLON BRACE_OPEN BRACE_CLOSE BRACKET_OPEN BRACKET_CLOSE STRING DATE BOOL FLOAT INTEGER URL CARGO ESTADO NULL_VALUE K_VERSION K_FIRMA_DIGITAL K_EMPRESAS K_NOMBRE_EMPRESA K_FUNDACION K_DIRECCION K_INGRESOS_ANUALES K_PYME K_LINK K_CALLE K_CIUDAD K_PAIS K_DEPARTAMENTOS K_NOMBRE  K_JEFE K_SUBDEPARTAMENTOS K_EMPLEADOS K_EDAD K_CARGO K_SALARIO K_ACTIVO K_FECHA_CONTRATACION K_PROYECTOS K_ESTADO K_FECHA_INICIO K_FECHA_FIN OTRO
 
-%type <string> STRING ESTADO DATE;
 %type <integer> INTEGER;
 %type <boolean> BOOL;
-%type <string> URL;
-%type <string> K_VERSION;
-%type <string> K_FIRMA_DIGITAL;
 %type <string> nombre_empresa;
 %type <string> empleados_lista;
 %type <string> link;
@@ -36,7 +32,8 @@
 %type <string> proyecto_atributos;
 %type <string> nombre_proyecto;
 %type <string> estado;
-%type <string> fecha_fin nombre_departamento proyecto_nt proyectos fecha_inicio json_atributos version firma_digital empresas empresas_lista empresa empresa_nt empresa_atributos empleado empleado_atributos departamentos departamentos_lista departamento_nt departamento_atributos departamento subdepartamento_atributos subdepartamentos_lista subdepartamento_nt subdepartamento subdepartamentos;
+%type <string> STRING DATE URL ESTADO CARGO K_VERSION K_FIRMA_DIGITAL K_EMPRESAS K_NOMBRE_EMPRESA K_FUNDACION K_DIRECCION K_INGRESOS_ANUALES K_PYME K_LINK K_CALLE K_CIUDAD K_PAIS K_DEPARTAMENTOS K_NOMBRE  K_JEFE K_SUBDEPARTAMENTOS K_EMPLEADOS K_EDAD K_CARGO K_SALARIO K_ACTIVO K_FECHA_CONTRATACION K_PROYECTOS K_ESTADO K_FECHA_INICIO K_FECHA_FIN;
+%type <string> string fecha_fin nombre_departamento proyecto_nt proyectos fecha_inicio json_atributos version firma_digital empresas empresas_lista empresa empresa_nt empresa_atributos empleado empleado_atributos departamentos departamentos_lista departamento_nt departamento_atributos departamento subdepartamento_atributos subdepartamentos_lista subdepartamento_nt subdepartamento subdepartamentos;
 
 %union{
   double number;
@@ -66,12 +63,12 @@ json_atributos:
 ;
 
 version:
-  K_VERSION COLON STRING
+  K_VERSION COLON string
 | K_VERSION COLON NULL_VALUE
 ;
 		
 firma_digital:
-  K_FIRMA_DIGITAL COLON STRING
+  K_FIRMA_DIGITAL COLON string
 | K_FIRMA_DIGITAL COLON NULL_VALUE
 ;
 
@@ -96,7 +93,7 @@ empresa_atributos:
 | nombre_empresa COMMA fundacion COMMA ingresos_anuales COMMA pyme COMMA departamentos                              { char *buf; asprintf(&buf, "%s%s", $1,$9); $$ = buf; }
 ;
 
-nombre_empresa: K_NOMBRE_EMPRESA COLON STRING   { char *buf; asprintf(&buf, "<h1>%s</h1>", $3); $$ = buf; }
+nombre_empresa: K_NOMBRE_EMPRESA COLON string   { char *buf; asprintf(&buf, "<h1>%s</h1>", $3); $$ = buf; }
 ;
 
 fundacion: K_FUNDACION COLON INTEGER;
@@ -126,15 +123,15 @@ direccion_atributos:
 ;
 
 calle: 
-  K_CALLE COLON STRING
+  K_CALLE COLON string
 ;
 
 ciudad: 
-  K_CIUDAD COLON STRING
+  K_CIUDAD COLON string
 ;
 
 pais: 
-  K_PAIS COLON STRING
+  K_PAIS COLON string
 ;
 
 departamentos: 
@@ -164,11 +161,11 @@ departamento_atributos:
 ;
 
 nombre_departamento: 
-  K_NOMBRE COLON STRING    { char *buf; asprintf(&buf, "<h2>%s</h2>", $3); $$ = buf; }
+  K_NOMBRE COLON string    { char *buf; asprintf(&buf, "<h2>%s</h2>", $3); $$ = buf; }
 ;
 
 jefe_departamento: 
-  K_JEFE COLON STRING
+  K_JEFE COLON string
 | K_JEFE COLON NULL_VALUE
 ;
 
@@ -202,11 +199,11 @@ subdepartamento_atributos:
 ;
 
 nombre_subdepartamento: 
-  K_NOMBRE COLON STRING   { char *buf; asprintf(&buf, "<h3>%s</h3>", $3); $$ = buf; }
+  K_NOMBRE COLON string   { char *buf; asprintf(&buf, "<h3>%s</h3>", $3); $$ = buf; }
 ;
 
 jefe_subdepartamento: 
-  K_JEFE COLON STRING
+  K_JEFE COLON string
 | K_JEFE COLON NULL_VALUE
 ;
 
@@ -235,7 +232,7 @@ empleado_atributos:
 | nombre_empleado COMMA cargo COMMA salario COMMA activo COMMA fecha_contratacion                               { $$ = $1; }
 ;
 
-nombre_empleado: K_NOMBRE COLON STRING    { char *buf; asprintf(&buf, "<li>%s</li>", $3); $$ = buf; }
+nombre_empleado: K_NOMBRE COLON string    { char *buf; asprintf(&buf, "<li>%s</li>", $3); $$ = buf; }
 ;
 
 edad:
@@ -277,7 +274,8 @@ proyecto_atributos:
 | nombre_proyecto COMMA fecha_inicio                                { char *buf; asprintf(&buf, "<td>%s</td> <td>-</td> <td>%s</td> <td>-</td>", $1,$3); $$ = buf; }
 ;
 
-nombre_proyecto: K_NOMBRE COLON STRING    { $$ = $3; }
+nombre_proyecto: 
+  K_NOMBRE COLON string     { $$ = $3; }
 ;
 
 estado:
@@ -291,6 +289,40 @@ fecha_inicio: K_FECHA_INICIO COLON DATE { $$ = $3; }
 fecha_fin:
   K_FECHA_FIN COLON DATE          { $$ = $3; }
 | K_FECHA_FIN COLON NULL_VALUE    { char *buf; asprintf(&buf, "-"); $$ = buf; }
+;
+
+string:
+  STRING                  { $$ = $1; }
+| DATE                    { $$ = $1; }
+| URL                     { $$ = $1; }
+| CARGO                   { $$ = $1; }
+| ESTADO                  { $$ = $1; }
+| K_VERSION               { $$ = $1; }
+| K_FIRMA_DIGITAL         { $$ = $1; }
+| K_EMPRESAS              { $$ = $1; }
+| K_NOMBRE_EMPRESA        { $$ = $1; }
+| K_FUNDACION             { $$ = $1; }
+| K_DIRECCION             { $$ = $1; }
+| K_INGRESOS_ANUALES      { $$ = $1; }
+| K_PYME                  { $$ = $1; }
+| K_LINK                  { $$ = $1; }
+| K_CALLE                 { $$ = $1; }
+| K_CIUDAD                { $$ = $1; }
+| K_PAIS                  { $$ = $1; }
+| K_DEPARTAMENTOS         { $$ = $1; }
+| K_NOMBRE                { $$ = $1; }
+| K_JEFE                  { $$ = $1; }
+| K_SUBDEPARTAMENTOS      { $$ = $1; }
+| K_EMPLEADOS             { $$ = $1; }
+| K_EDAD                  { $$ = $1; }
+| K_CARGO                 { $$ = $1; }
+| K_SALARIO               { $$ = $1; }
+| K_ACTIVO                { $$ = $1; }
+| K_FECHA_CONTRATACION    { $$ = $1; }
+| K_PROYECTOS             { $$ = $1; }
+| K_ESTADO                { $$ = $1; }
+| K_FECHA_INICIO          { $$ = $1; }
+| K_FECHA_FIN             { $$ = $1; }
 ;
 
 %%
