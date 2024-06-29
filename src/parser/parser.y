@@ -109,7 +109,7 @@ ingresos_anuales: K_INGRESOS_ANUALES COLON FLOAT;
 pyme: K_PYME COLON BOOL;
 
 link:
-  K_LINK COLON URL          { char* buf; asprintf(&buf, "<a href=\"%s\">%s</a>", $3, $3 ); $$ = buf; }
+  K_LINK COLON URL          { char* buf; asprintf(&buf, "<h4>Link: <a href=\"%s\">%s</a></h4>", $3, $3 ); $$ = buf; }
 | K_LINK COLON NULL_VALUE   { $$ = ""; }
 ;
 		
@@ -232,7 +232,7 @@ empleado_atributos:
 | nombre_empleado COMMA cargo COMMA salario COMMA activo COMMA fecha_contratacion                               { $$ = $1; }
 ;
 
-nombre_empleado: K_NOMBRE COLON string    { char *buf; asprintf(&buf, "<li>%s</li>", $3); $$ = buf; }
+nombre_empleado: K_NOMBRE COLON string    { char *buf; asprintf(&buf, "<li>Empleado: %s</li>", $3); $$ = buf; }
 ;
 
 edad:

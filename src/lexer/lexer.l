@@ -23,7 +23,7 @@ void copyString();
 %option nodefault
 
 Ignorar	("\n"|"\t"|" ")*
-String \"([a-zA-Z0-9 \-\.]|"á"|"é"|"í"|"ó"|"ú"|"ü"|"Á"|"É"|"Í"|"Ó"|"Ú"|"Ü")*\"
+String \"([a-zA-Z0-9 ,\-\.]|"á"|"é"|"í"|"ó"|"ú"|"ü"|"Á"|"É"|"Í"|"Ó"|"Ú"|"Ü")*\"
 Year ("19"|"20")[0-9]{2}
 Month ("1"[0-2]|"0"[1-9])
 Day (("1"|"2")[0-9]|"3"("0"|"1")|"0"?[1-9])
@@ -31,9 +31,10 @@ Date \"{Year}-{Month}-{Day}\"
 Bool "true"|"false"
 Float [0-9]+\.[0-9]{1,2}
 Integer [0-9]+
-Dominio [a-zA-Z]+(\.[a-zA-Z]+)+
-Puerto :[0-9]{0,5}
-Ruta (\/[a-zA-Z#/:?=]+)+
+UrlChar [a-zA-Z0-9$\-\_\.\+\!\*\'\(\)\;\/\?\:\@\=\&\%\<\>\#\{\}\|\\\^\~\[\]\ ]
+Dominio {UrlChar}+
+Puerto ":"((6553[0-5])|(655[0-2][0-9])|(65[0-4][0-9]{2})|(6[0-4][0-9]{3})|([1-5][0-9]{4})|([0-5]{0,5})|([0][0-9]{1,4})|([0-9]{1,4}))
+Ruta "/"{UrlChar}*
 Url \"[a-zA-Z]+"://"{Dominio}{Puerto}?{Ruta}?\"
 Cargo \"("Product Analyst"|"Project Manager"|"UX Designer"|"Marketing"|"Developer"|"Devops"|"DB Admin")\"
 Estado \"("To do"|"In progress"|"Canceled"|"Done"|"On hold")\"
@@ -83,7 +84,7 @@ Estado \"("To do"|"In progress"|"Canceled"|"Done"|"On hold")\"
 \]  { printToken("BRACKET_CLOSE"); if (executionMode == MODE_PARSING) return(BRACKET_CLOSE); }
 ,   { printToken("COMMA"); if (executionMode == MODE_PARSING) return(COMMA); }
 : { printToken("COLON"); if (executionMode == MODE_PARSING) return(COLON); }
-. { showError(yytext); if (executionMode == MODE_PARSING) return(OTRO); }
+. { showError(yytext); return(OTRO); }
 
 
 %%
