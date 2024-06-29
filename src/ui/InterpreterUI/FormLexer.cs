@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows.Forms;
 
-namespace Lexer
+namespace Interpreter
 {
-    public partial class Form2 : Form
+    public partial class FormLexer : Form
     {
 
 
@@ -19,7 +19,7 @@ namespace Lexer
 
         private const int TEXT_TIMEOUT_DELAY = 500;
 
-        public Form2()
+        public FormLexer()
         {
             InitializeComponent();
             timer = new System.Windows.Forms.Timer();
@@ -54,7 +54,7 @@ namespace Lexer
 
         private void _tmrDelaySearch_Tick(object? sender, EventArgs e)
         {
-            string lexedString = LexerHelper.lexFromString(TextInputBox.Text);
+            string lexedString = InterpreterHelper.lexFromString(TextInputBox.Text);
             if (lexedString == null)
             {
                 OutputTextBox.Text = string.Empty;

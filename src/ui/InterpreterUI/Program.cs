@@ -1,6 +1,6 @@
 using System.Configuration;
 
-namespace Lexer
+namespace Interpreter
 {
     internal static class Program
     {

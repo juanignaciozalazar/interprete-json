@@ -1,6 +1,6 @@
-﻿namespace Lexer
+﻿namespace Interpreter
 {
-    partial class Form2
+    partial class FormLexer
     {
         /// <summary>
         /// Required designer variable.
