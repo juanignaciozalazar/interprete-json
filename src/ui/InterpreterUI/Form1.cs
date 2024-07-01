@@ -1,5 +1,6 @@
 using InterpreterUI;
 using System.Configuration;
+using System.Windows.Forms;
 
 namespace Interpreter
 {
@@ -7,15 +8,11 @@ namespace Interpreter
     {
         private FormLexer formLexer;
         private FormParser formParser;
-        OpenFileDialog openFileDialog;
 
         public Form1()
         {
             InitializeComponent();
-            openFileDialog = new OpenFileDialog();
-            openFileDialog.DefaultExt = "dll";
-            openFileDialog.AddExtension = true;
-
+            attemptFindInterpreter();
         }
 
         private void formLexer_init()
@@ -51,9 +48,33 @@ namespace Interpreter
             setInterpreterFileDialog();
         }
 
+        private void attemptFindInterpreter()
+        {
+            
+            string? currentDirectory = Directory.GetCurrentDirectory();
+
+            while (!string.IsNullOrEmpty(currentDirectory))
+            {
+                string potentialPath = Path.Combine(currentDirectory, "bin", "interpreter.exe");
+                if (File.Exists(potentialPath))
+                {
+                    Program.AddUpdateAppSettings(Program.interpreterKey, potentialPath);
+                    Program.configFile!.Save(ConfigurationSaveMode.Modified);
+                    ConfigurationManager.RefreshSection(Program.configFile.AppSettings.SectionInformation.Name);
+                    return;
+                }
+
+                // Subir un nivel en el árbol de directorios
+                currentDirectory = Directory.GetParent(currentDirectory)?.FullName;
+            }
+            
+        }
+
         private bool setInterpreterFileDialog()
         {
-
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Seleccione la ubicación del archivo interpreter.exe";
+            openFileDialog.Filter = "Archivo Ejecutable (*.exe)|*.exe|All files(*.*)|*.*";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
 

@@ -63,46 +63,6 @@ namespace InterpreterUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _12066112_4882758 {
-            get {
-                object obj = ResourceManager.GetObject("12066112_4882758", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap _12066112_4882758__1_ {
-            get {
-                object obj = ResourceManager.GetObject("12066112_4882758 (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap _33109726_8006778__1_ {
-            get {
-                object obj = ResourceManager.GetObject("33109726_8006778 (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap _6764476_3417903 {
-            get {
-                object obj = ResourceManager.GetObject("6764476_3417903", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Group_5 {
             get {
                 object obj = ResourceManager.GetObject("Group 5", resourceCulture);

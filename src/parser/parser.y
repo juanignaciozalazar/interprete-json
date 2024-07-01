@@ -9,6 +9,7 @@
   int yystopparser=0;
   char *template_file_path;
   int executionMode;
+  int parseResult = 0;
   int yylex();
   int yyerror(char *s);
   void initTemplate();
@@ -34,6 +35,7 @@
 %type <string> estado;
 %type <string> STRING DATE URL ESTADO CARGO K_VERSION K_FIRMA_DIGITAL K_EMPRESAS K_NOMBRE_EMPRESA K_FUNDACION K_DIRECCION K_INGRESOS_ANUALES K_PYME K_LINK K_CALLE K_CIUDAD K_PAIS K_DEPARTAMENTOS K_NOMBRE  K_JEFE K_SUBDEPARTAMENTOS K_EMPLEADOS K_EDAD K_CARGO K_SALARIO K_ACTIVO K_FECHA_CONTRATACION K_PROYECTOS K_ESTADO K_FECHA_INICIO K_FECHA_FIN;
 %type <string> string fecha_fin nombre_departamento proyecto_nt proyectos fecha_inicio json_atributos version firma_digital empresas empresas_lista empresa empresa_nt empresa_atributos empleado empleado_atributos departamentos departamentos_lista departamento_nt departamento_atributos departamento subdepartamento_atributos subdepartamentos_lista subdepartamento_nt subdepartamento subdepartamentos;
+%type <number> numeric FLOAT;
 
 %union{
   double number;
@@ -104,7 +106,7 @@ direccion:
 | K_DIRECCION COLON NULL_VALUE
 ;
 
-ingresos_anuales: K_INGRESOS_ANUALES COLON FLOAT;
+ingresos_anuales: K_INGRESOS_ANUALES COLON numeric;
 
 pyme: K_PYME COLON BOOL;
 
@@ -232,7 +234,7 @@ empleado_atributos:
 | nombre_empleado COMMA cargo COMMA salario COMMA activo COMMA fecha_contratacion                               { $$ = $1; }
 ;
 
-nombre_empleado: K_NOMBRE COLON string    { char *buf; asprintf(&buf, "<li>Empleado: %s</li>", $3); $$ = buf; }
+nombre_empleado: K_NOMBRE COLON string    { char *buf; asprintf(&buf, "<li>%s</li>", $3); $$ = buf; }
 ;
 
 edad:
@@ -242,7 +244,7 @@ edad:
 
 cargo: K_CARGO COLON CARGO;
 
-salario: K_SALARIO COLON FLOAT;
+salario: K_SALARIO COLON numeric;
 
 activo: K_ACTIVO COLON BOOL;
 
@@ -325,33 +327,121 @@ string:
 | K_FECHA_FIN             { $$ = $1; }
 ;
 
+numeric:
+  INTEGER   { $$ = $1; }
+| FLOAT     { $$ = $1; }
+
 %%
 
 int yyerror(char *error) {
   fprintf(yyout, "[Error Sintactico (%s) en linea %d => %s]\n", yytext, yylineno, error);
+  parseResult = -1;
 }
 
 void initTemplate() {
-  FILE *template;
-  char buffer[READ_BUFFER_SIZE];
-  size_t bytes_leidos;
-  
-  template = fopen(template_file_path, "r");
-
-  if (template == NULL) {
-    printf("No se encontró el archivo de template, se escribirá un template por defecto...\n");
-    fprintf(yyout, "<!DOCTYPE html>\n<html><head><style> .container { border-color:grey; border-width:1px; border-style:inset; } .lista { padding-left: 20px; } table, th, td { border: 1px solid black; border-collapse: collapse; }</style></head>");
-    return;
-  }
-
-  while ((bytes_leidos = fread(buffer, sizeof(char), READ_BUFFER_SIZE, template)) > 0) {
-    if (fwrite(buffer, sizeof(char), bytes_leidos, yyout) != bytes_leidos) {
-      printf("Error al escribir en el archivo de destino\n");
-      fclose(template);
-      return;
-    }
-  }
-
-  fclose(template); 
-  
+  fprintf(yyout, "\
+    <!DOCTYPE html>\
+\
+<html lang=\"es\"> \
+<head> \
+    <meta charset=\"UTF-8\"> \
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"> \
+    <title>Parseando con HTML</title> \
+    <style> \
+        body { \
+            background-color: #303841; \
+            color: white; \
+            font-family: Arial, sans-serif; \
+            margin: 0; \
+            padding: 0; \
+        } \
+\
+        .container { \
+            margin: 20px auto; \
+            padding: 20px; \
+            max-width: 800px; \
+            background-color: #3a4750; \
+            border-radius: 10px; \
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); \
+        } \
+\
+        h1, h3 { \
+            color: #9ED5C5; \
+            text-align: center; \
+        } \
+\
+        h2 { \
+            color: #9ED5C5; \
+            text-align: center; \
+            margin-top: 30px;  \
+            border-bottom: 2px solid #41B06E; \
+            display: inline-block; \
+            padding-bottom: 5px; \
+        } \
+\
+        a { \
+            color: #40A578; \
+            text-decoration: none; \
+        } \
+\
+        a:hover { \
+            text-decoration: underline; \
+        } \
+\
+        table { \
+            width: 100%%; \
+            margin: 10px 0; \
+            border-collapse: collapse; \
+            table-layout: fixed; \
+        } \
+\
+        th, td { \
+            padding: 8px; \
+            text-align: center; \
+            border: none; \
+        } \
+\
+        th { \
+            background-color: #577B8D; \
+            position: sticky; \
+            top: 0; \
+            z-index: 2; \
+        } \
+\
+        tbody td { \
+            background-color: #CDE8E5; \
+            color: black; \
+        } \
+\
+        tbody { \
+            display: block; \
+            height: 150px; \
+            overflow-y: auto; \
+            width: 100%%; \
+        } \
+\
+        thead, tbody tr { \
+            display: table; \
+            width: 100%%; \
+            table-layout: fixed; \
+        } \
+\
+        ul { \
+            list-style-type: none; \
+            padding: 0; \
+        } \
+ \
+        li { \
+            margin: 10px 0; \
+            padding: 10px; \
+            background-color: #40A578; \
+            border-radius: 5px; \
+        } \
+ \
+        .lista { \
+            padding-left: 20px; \
+        } \
+    </style> \
+</head> \
+");
 }

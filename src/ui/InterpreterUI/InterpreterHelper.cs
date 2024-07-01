@@ -15,6 +15,16 @@ namespace Interpreter
         LEXER = 1
     }
 
+    internal class InterpreterResult
+    {
+        public string? Text;
+        public bool Success;
+        internal InterpreterResult(string? text, bool success) {
+            this.Text = text;
+            this.Success = success;
+        }
+    }
+
     internal class InterpreterHelper
     {
 
@@ -24,8 +34,8 @@ namespace Interpreter
         private bool isInputTemp = false;
         private bool isOutputTemp = false;
 
-        private static readonly string INPUT_TEMP_FILE_NAME = "interpreter_input.tmp";
-        private static readonly string OUTPUT_TEMP_FILE_NAME = "interpreter_output.tmp";
+        private static readonly string INPUT_TEMP_FILE_NAME = "interpreter_input.json";
+        private static readonly string OUTPUT_TEMP_FILE_NAME = "interpreter_output.html";
 
         public InterpreterHelper(string inputFilePath, string outputFilePath)
         {
@@ -40,7 +50,7 @@ namespace Interpreter
             this.templateFilePath= templateFilePath;
         }
 
-        public static string lexFromString(string input)
+        public static InterpreterResult lexFromString(string input)
         {
 
             string inputFilePath = Path.Combine(Path.GetTempPath(), INPUT_TEMP_FILE_NAME);
@@ -59,11 +69,11 @@ namespace Interpreter
 
             string outputText = helper.readOutputFile();
 
-            return outputText;
+            return new InterpreterResult(outputText, interpreterReturnValue == 0);
 
         }
 
-        public static string parseFromString(string input)
+        public static InterpreterResult parseFromString(string input)
         {
             string inputFilePath = Path.Combine(Path.GetTempPath(), INPUT_TEMP_FILE_NAME);
             string outputFilePath = Path.Combine(Path.GetTempPath(), OUTPUT_TEMP_FILE_NAME);
@@ -81,7 +91,7 @@ namespace Interpreter
 
             string outputText = helper.readOutputFile();
 
-            return outputText;
+            return new InterpreterResult(outputText, interpreterReturnValue == 0);
         }
 
         public static bool parseFromFile(string inputFilePath, string? outputFilePath, string? templateFilePath)
@@ -148,10 +158,10 @@ namespace Interpreter
                 catch ( Exception ex )
                 {
                     Debug.WriteLine(ex.Message );
-                    return "";
+                    return string.Empty;
                 }
             }
-            return "";            
+            return string.Empty;            
         }
         private int lex(string inputFileName, string? outputFileName)
         {
@@ -220,13 +230,8 @@ namespace Interpreter
                 using (Process interpreterProcess = Process.Start(startInfo)!)
                 {
                     interpreterProcess.WaitForExit();
+                    return interpreterProcess.ExitCode;
                 }
-
-
-
-                
-
-                return 0;
 
             }
             catch (Exception ex)

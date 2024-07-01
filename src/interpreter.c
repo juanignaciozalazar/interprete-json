@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
 			if (executionMode == MODE_LEXER)
 				yylex();
-			else
+			else 
 				yyparse();
 
 			yyrestart(yyin);
@@ -100,8 +100,7 @@ int main(int argc, char *argv[])
 	if (argc == 3)
 	{
 		puts("Se recibio un solo archivo, se escribira la salida a la pantalla");
-		execute(executionMode, argv[2], NULL);
-		return 0;
+		return execute(executionMode, argv[2], NULL);
 	}
 
 	// Modo, archivo de entrada y archivo de salida
@@ -112,8 +111,7 @@ int main(int argc, char *argv[])
 		printf("Archivo de entrada: %s\n", argv[2]);
 		printf("Archivo de salida: %s\n", argv[3]);
 
-		execute(executionMode, argv[2], argv[3]);
-		return 0;
+		return execute(executionMode, argv[2], argv[3]);
 	}
 
 	// Modo, archivo de entrada, salida y template
@@ -127,8 +125,7 @@ int main(int argc, char *argv[])
 
 		template_file_path = argv[4];
 
-		execute(executionMode, argv[2], argv[3]);
-		return 0;
+		return execute(executionMode, argv[2], argv[3]);
 	}
 
 	return 0;
@@ -156,6 +153,13 @@ int handleFiles(char *inputFilePath, char *outputFilePath)
 {
 	FILE *inputFileHandler;
 	FILE *outputFileHandler;
+	
+	//valida extension
+	char *inputFileExtension = getExtension(inputFilePath);
+	if (strcmp("json", inputFileExtension) != 0 ) {
+		puts("El archivo de entrada debe tener extensión \".json\"");
+		return 1;
+	}
 
 	inputFileHandler = fopen(inputFilePath, "r");
 	
@@ -193,6 +197,18 @@ int handleFiles(char *inputFilePath, char *outputFilePath)
 	yyout = outputFileHandler;
 
 	return 0;
+}
+
+char* getExtension(const char* path) {
+    // Encuentra el último punto en la ruta
+    const char* lastDot = strrchr(path, '.');
+    if (lastDot == NULL) {
+        // Si no hay punto, no hay extensión
+        return NULL;
+    } else {
+        // Devuelve una copia de la extensión
+        return strdup(lastDot + 1);
+    }
 }
 
 char *changeExtension(char *path, char *extension)
@@ -270,5 +286,5 @@ int execute(int mode, char *inputFilePath, char *outputFilePath)
 		fclose(yyout);
 	}
 
-	return 0;
+	return (mode == MODE_LEXER) ? lexResult : parseResult;
 }
